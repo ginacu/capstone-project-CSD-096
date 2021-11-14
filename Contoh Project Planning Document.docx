@@ -8,18 +8,14 @@ Tema yang dipilih: Resource Sharing & User Generated content
 
 Judul Proyek: Aplikasi Rekomendasi Produk Skincare Sesuai Permasalahan Kulit Wajah
 
-Executive Summary: 
-Problem Statement
-Saat ini, semakin beragam permasalahan kulit yang dialami oleh wanita. Tidak lagi kita hanya mendengar istilah jerawat, komedo, dan kerutan di wajah. Melainkan terdapat banyak jenis permasalahan kulit yang lebih mendetail dan memerlukan treatment khusus untuk mengatasinya seperti blackheads, whiteheads, milia, over-exfoliate, pigmentasi kulit, dan masih banyak lagi.
-Dengan beragam jenis permasalahan kulit di atas, kini sudah banyak juga jenis-jenis produk skincare yang bermunculan dan dengan berbagai claim serta bahan-bahan saktinya yang ampuh mengatasi setiap permasalahan kulit. Baik itu produk luar negeri, maupun dalam negeri.
-Dengan permasalahan di atas, kami mengembangkan sebuah aplikasi yang akan memudahkan orang-orang dalam menganalisis permasalahan kulit yang mereka miliki dengan menawarkan solusi berupa rekomendasi produk yang cocok dengan permasalahan kulit tersebut dari sekian banyaknya produk yang terjual di Indonesia.
+Executive Summary:
+Problem Statement: Banyak produk skincare atasi masalah kulit. Apakah orang akan mudah menemukan produk yang tepat untuk kebutuhan kulit mereka? Dari masalah tersebut, kami akan membuat sistem rekomendasi produk skincare sesuai kondisi kulit.
+Research Question:
+- Kondisi kulit apa yang memengaruhi rekomendasi produk skincare?
+- Produk apa yang akan direkomendasikan jika memiliki kondisi kulit tertentu?
+Latar Belakang: Banyak jenis skincare membuat bingung memilih mana yang cocok untuk kulit.
+Alasan tim kami memilih proyek ini karena kami sebagai wanita merasakan hal yang sama, bingung memilih produk skincare.
 
-
-Research Questions
-
-Latar Belakang
-
-mengapa tim Anda memilih proyek ini
 
 
 Project Scope & Deliverables: 
