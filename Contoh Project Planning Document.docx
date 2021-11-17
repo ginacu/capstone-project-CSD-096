@@ -4,24 +4,62 @@ Nama Anggota:
 1.	M342V6359 - Dwi Ayu Nouvalina
 2.	M182V4139 - Gina Cahya Utami
 
-Tema yang dipilih: Resource Sharing & User Generated content
+Tema yang dipilih : Resource Sharing & User Generated content
 
-Judul Proyek: Aplikasi Rekomendasi Produk Skincare Sesuai Permasalahan Kulit Wajah
+Judul Proyek : Aplikasi Rekomendasi Produk Skincare Sesuai Permasalahan Kulit Wajah
 
-Executive Summary:
-Problem Statement: Banyak produk skincare atasi masalah kulit. Apakah orang akan mudah menemukan produk yang tepat untuk kebutuhan kulit mereka? Dari masalah tersebut, kami akan membuat sistem rekomendasi produk skincare sesuai kondisi kulit.
-Research Question:
-- Kondisi kulit apa yang memengaruhi rekomendasi produk skincare?
-- Produk apa yang akan direkomendasikan jika memiliki kondisi kulit tertentu?
-Latar Belakang: Banyak jenis skincare membuat bingung memilih mana yang cocok untuk kulit.
-Alasan tim kami memilih proyek ini karena kami sebagai wanita merasakan hal yang sama, bingung memilih produk skincare.
+Executive Summary :
 
 
+Seiring berkembangnya zaman, semakin banyak perubahan yang terjadi  pada gaya hidup manusia  khususnya  di bidang kecantikan (skincare). Banyaknya produk skincare yang beredar, membuat kita sulit menemukan produk yang tepat. Hal itu dibuktikan dari riset terhadap 100 responden wanita mengenai kesulitan memilih produk serta permasalahan kulit yang mereka alami. Berangkat dari permasalahan tersebut, kami berinisiatif membuat proyek aplikasi yang bisa merekomendasikan produk skincare sesuai permasalahan kulit, sehingga ke depannya tidak salah dalam memilih produk.
 
-Project Scope & Deliverables: 
 
-Project Schedule: 
+Project Scope & Deliverables : 
+
+Ruang lingkup proyek terbatas pada wanita pengguna skincare atau yang memiliki masalah kulit wajah dengan rentang usia 12-55 tahun. Penggunaan aplikasi dimulai dengan user memberikan input mengenai tipe kulit dan permasalahan kulit yang dialami. Lalu, sistem akan memberikan rekomendasi sesuai dengan input dari pengguna.
+Untuk durasi pengerjaan proyek diperkirakan selama 4-5 minggu dengan rincian sebagai berikut :
+W14 : Data Cleaning, Analysis, dan Preparation (3 hari), Modelling (4 hari), Mentoring eksternal (1 hari)
+W15 : Evaluation (2 hari) dan Deployment (5 hari)
+W16 : Deployment lanjutan (4 hari), Testing-Debugging(3 hari), 
+W17 : Review Project dan Mentoring 
+W18 : Pembuatan slide, video, readme, dsb
+
+Ruang lingkup dan perkiraan waktu diatas adalah sampai tahap memberikan rekomendasi produk skincare kepada pengguna sesuai permasalahan kulit wajah. Untuk pengembangan proyek ke depannya, diharapkan sistem bisa memberikan output apakah produk dengan bahan A bisa dikombinasikan dengan produk bahan B sehingga lebih membantu pengguna ketika menggunakan banyak produk.
+
+
+Project Schedule : 
+
+Dalam pembuatan jadwal proyek, kami menggunakan Gantt Chart dan Google Calendar untuk pertemuan rutin 2 hari sekali (terlepas dari urgent meeting) yang dimulai sejak pembahasan project plan. 
+Jadwal pembuatan proyek dilakukan sepadat dan seefisien mungkin di awal-awal minggu guna mencegah terjadinya error atau hambatan yang bisa saja terjadi ke depannya, sehingga masih memiliki cukup waktu untuk mengatasinya. 
+
 
 Project Resources: 
 
+Sumber daya yang digunakan dalam pembuatan proyek ini yaitu :
+Research : Google Form
+Dataset : Kaggle, Web scrapping (Sephora, Sociolla)
+Bahasa pemrograman : Python, HTML, CSS, JavaScript
+Framework : Tensorflow 
+Deployment : 
+Initial - Docker 
+Improved - Streamlit
+
+
 Risk and Issue Management Plan: 
+
+Strengths (S) : 
+1.	Mengangkat isu yang sedang booming
+2.	Diperlukan di masa sekarang 
+3.	Populasi wanita yang banyak 
+
+Weakness (W) :
+Permasalahan pada kulit wajah pada faktanya lebih rumit, sehingga produk yang direkomendasikan tidak benar-benar akurat.
+
+Opportunities (O) :
+Banyak wanita yang suka mencari rekomendasi produk skincare 
+ 
+Threats (T) :
+1.	Belum menyelesaikan kelas belajar Dicoding saaat pembuatan capstone
+2.	Koneksi internet yang terganggu 
+3.	Bencana alam atau kendala lain yang tidak bisa dicegah
+
