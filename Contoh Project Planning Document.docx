@@ -11,16 +11,16 @@ Judul Proyek : Aplikasi Rekomendasi Produk Skincare Sesuai Permasalahan Kulit Wa
 Executive Summary :
 
 
-Seiring berkembangnya zaman, semakin banyak perubahan yang terjadi  pada gaya hidup manusia  khususnya  di bidang kecantikan (skincare). Banyaknya produk skincare yang beredar, membuat kita sulit menemukan produk yang tepat. Hal itu dibuktikan dari riset terhadap 100 responden wanita mengenai kesulitan memilih produk serta permasalahan kulit yang mereka alami. Berangkat dari permasalahan tersebut, kami berinisiatif membuat proyek aplikasi yang bisa merekomendasikan produk skincare sesuai permasalahan kulit, sehingga ke depannya tidak salah dalam memilih produk.
+Seiring berkembangnya zaman, semakin banyak perubahan yang terjadi  pada gaya hidup manusia  khususnya  di bidang kecantikan (skincare). Banyaknya produk skincare yang beredar, membuat kita sulit menemukan produk yang tepat. Hal itu dibuktikan dari riset terhadap 100 responden wanita mengenai permasalahan kulit yang mereka alami. Berangkat dari permasalahan tersebut, kami berinisiatif membuat proyek aplikasi yang bisa merekomendasikan produk skincare sesuai permasalahan kulit, sehingga ke depannya tidak salah dalam memilih produk.
 
 
 Project Scope & Deliverables : 
 
 Ruang lingkup proyek terbatas pada wanita pengguna skincare atau yang memiliki masalah kulit wajah dengan rentang usia 12-55 tahun. Penggunaan aplikasi dimulai dengan user memberikan input mengenai tipe kulit dan permasalahan kulit yang dialami. Lalu, sistem akan memberikan rekomendasi sesuai dengan input dari pengguna.
 Untuk durasi pengerjaan proyek diperkirakan selama 4-5 minggu dengan rincian sebagai berikut :
-W14 : Data Cleaning, Analysis, dan Preparation (3 hari), Modelling (4 hari), Mentoring eksternal (1 hari)
-W15 : Evaluation (2 hari) dan Deployment (5 hari)
-W16 : Deployment lanjutan (4 hari), Testing-Debugging(3 hari), 
+W14 : Data Collecting and Web Scrapping (1 hari), Data Cleaning, Analysis, dan Preparation (3 hari), Modelling (2 hari), Mentoring eksternal (1 hari)
+W15 : Modelling (5 hari), Evaluation (2 hari) 
+W16 : Deployment (5 hari), Testing-Debugging(2 hari), 
 W17 : Review Project dan Mentoring 
 W18 : Pembuatan slide, video, readme, dsb
 
@@ -38,11 +38,9 @@ Project Resources:
 Sumber daya yang digunakan dalam pembuatan proyek ini yaitu :
 Research : Google Form
 Dataset : Kaggle, Web scrapping (Sephora, Sociolla)
-Bahasa pemrograman : Python, HTML, CSS, JavaScript
+Bahasa pemrograman : Python, HTML, CSS
 Framework : Tensorflow 
-Deployment : 
-Initial - Docker 
-Improved - Streamlit
+Deployment : Streamlit
 
 
 Risk and Issue Management Plan: 
