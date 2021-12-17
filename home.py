@@ -43,6 +43,7 @@ st.dataframe(filtered_df)
 
 options_b = filtered_df['product_name'].unique().tolist()
 product = st.selectbox(label='Select the product', options = sorted(options_b))
+product
 
 ## Helper functions
 # Define the one-hot encoding function
@@ -61,13 +62,13 @@ def closest_point(point, points):
 
 
 if category is not None:
-    category_subset = skincare[skincare['tipe_produk'] == category]
+    filtered_df = skincare[skincare['tipe_produk'] == category]
 
 if product is not None:
     #skincare_type = category_subset[category_subset[str(skin_type)] == 1]
 
     # Reset index
-    category_subset = category_subset.reset_index(drop=True)
+    filtered_df = filtered_df.reset_index(drop=True)
 
     # Display data frame
     #st.dataframe(category_subset)
@@ -78,8 +79,8 @@ if product is not None:
     i = 0
 
     # For loop for tokenization
-    for i in range(len(category_subset)):    
-        notable_effects = category_subset['notable_effects'][i]
+    for i in range(len(filtered_df)):    
+        notable_effects = filtered_df['notable_effects'][i]
         notable_effects_lower = notable_effects.lower()
         tokens = notable_effects_lower.split(', ')
         corpus.append(tokens)
@@ -90,7 +91,7 @@ if product is not None:
 
                 
     # Get the number of items and tokens 
-    M = len(category_subset)
+    M = len(filtered_df)
     N = len(notable_effect_dict)
 
     # Initialize a matrix of zeros
@@ -115,21 +116,21 @@ if model_run:
     tsne_features = model.fit_transform(A)
 
     # Make X, Y columns 
-    category_subset['X'] = tsne_features[:, 0]
-    category_subset['Y'] = tsne_features[:, 1]
+    filtered_df['X'] = tsne_features[:, 0]
+    filtered_df['Y'] = tsne_features[:, 1]
 
-    target = category_subset[category_subset['product_name'] == product]
+    target = filtered_df[filtered_df['product_name'] == product]
 
     target_x = target['X'].values[0]
     target_y = target['Y'].values[0]
 
     df1 = pd.DataFrame()
-    df1['point'] = [(x, y) for x,y in zip(category_subset['X'], category_subset['Y'])]
+    df1['point'] = [(x, y) for x,y in zip(filtered_df['X'], filtered_df['Y'])]
 
-    category_subset['distance'] = [cdist(np.array([[target_x,target_y]]), np.array([product]), metric='euclidean') for product in df1['point']]
+    filtered_df['distance'] = [cdist(np.array([[target_x,target_y]]), np.array([product]), metric='euclidean') for product in df1['point']]
 
     # arrange by descending order
-    top_matches = category_subset.sort_values(by=['distance'])
+    top_matches = filtered_df.sort_values(by=['distance'])
 
     # Compute ingredients in common
     target_notable_effects = target.notable_effects.values
@@ -145,3 +146,4 @@ if model_run:
     top_matches = top_matches.drop(top_matches.index[0])
 
     st.dataframe(top_matches.head(5))
+
