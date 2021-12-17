@@ -43,107 +43,80 @@ st.dataframe(filtered_df)
 
 options_b = filtered_df['product_name'].unique().tolist()
 product = st.selectbox(label='Select the product', options = sorted(options_b))
+
 product
 
-## Helper functions
-# Define the one-hot encoding function
-def encoding(tokens):
-    x = np.zeros(N)
-    for notable_effect in tokens:
-        # Get the index for each ingredient
-        i = notable_effect_dict[notable_effect]
-        # Put 1 at the corresponding indices
-        x[i] = 1
-    return x
+product_name = filtered_df[filtered_df["product_name"] == product]
+st.dataframe(product_name)
 
-def closest_point(point, points):
-    """ Find closest point from a list of points. """
-    return points[cdist([point], points).argmin()]
+## MODELLING with Content Based Filtering
+# TF-IDF Vectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 
-
-if category is not None:
-    filtered_df = skincare[skincare['tipe_produk'] == category]
-
-if product is not None:
-    #skincare_type = category_subset[category_subset[str(skin_type)] == 1]
-
-    # Reset index
-    filtered_df = filtered_df.reset_index(drop=True)
-
-    # Display data frame
-    #st.dataframe(category_subset)
-
-    # Initialize dictionary, list, and initial index
-    notable_effect_dict = {}
-    corpus = []
-    i = 0
-
-    # For loop for tokenization
-    for i in range(len(filtered_df)):    
-        notable_effects = filtered_df['notable_effects'][i]
-        notable_effects_lower = notable_effects.lower()
-        tokens = notable_effects_lower.split(', ')
-        corpus.append(tokens)
-        for notable_effect in tokens:
-            if notable_effect not in notable_effect_dict:
-                notable_effect_dict[notable_effect] = i
-                i += 1
-
-                
-    # Get the number of items and tokens 
-    M = len(filtered_df)
-    N = len(notable_effect_dict)
-
-    # Initialize a matrix of zeros
-    A = np.zeros((M,N))
-
-    # Make a document-term matrix
-    i = 0
-    for tokens in corpus:
-        A[i, :] = encoding(tokens)
-        i +=1
-
-model_run = st.button('Find similar products!')
+# Inisialisasi TfidfVectorizer
+tf = TfidfVectorizer()
+ 
+# Melakukan perhitungan idf pada data 'book_title'
+tf.fit(skincare['product_name']) 
+ 
+# Mapping array dari fitur index integer ke fitur nama
+tf.get_feature_names()
 
 
-if model_run:
+# Melakukan fit lalu ditransformasikan ke bentuk matrix
+tfidf_matrix = tf.fit_transform(skincare['product_name']) 
+ 
+# Melihat ukuran matrix tfidf
+shape = tfidf_matrix.shape
 
-    st.write('Based on the ingredients of the product you selected')
-    st.write('here are the top 10 products that are the most similar :sparkles:')
+
+# Mengubah vektor tf-idf dalam bentuk matriks dengan fungsi todense()
+tfidf_matrix.todense()
+
+
+# Membuat dataframe untuk melihat tf-idf matrix
+# Kolom diisi dengan judul buku
+# Baris diisi dengan author buku
+ 
+pd.DataFrame(
+    tfidf_matrix.todense(), 
+    columns=tf.get_feature_names(),
+    index=skincare['notable_effects']
+).sample(shape[1], axis=1).sample(10, axis=0)
+
+
+# Menghitung cosine similarity pada matrix tf-idf
+from sklearn.metrics.pairwise import cosine_similarity
+cosine_sim = cosine_similarity(tfidf_matrix) 
+cosine_sim
+
+
+# Membuat dataframe dari variabel cosine_sim dengan baris dan kolom berupa author buku
+cosine_sim_df = pd.DataFrame(cosine_sim, index=skincare['notable_effects'], columns=skincare['notable_effects'])
+print('Shape:', cosine_sim_df.shape)
+ 
+# Melihat similarity matrix pada setiap author buku
+cosine_sim_df.sample(7, axis=1).sample(10, axis=0)
+
+
+def skincare_recommendations(notable_effects, similarity_data=cosine_sim_df, items=skincare[['notable_effects', 'product_name']], n=5):
     
-    # Run the model
-    model = TSNE(n_components = 2, learning_rate = 150, random_state = 42)
-    tsne_features = model.fit_transform(A)
+    # Mengambil data dengan menggunakan argpartition untuk melakukan partisi secara tidak langsung sepanjang sumbu yang diberikan    
+    # Dataframe diubah menjadi numpy
+    # Range(start, stop, step)
+    index = similarity_data.loc[:,notable_effects].to_numpy().argpartition(
+        range(-1, -n, -1))
+    
+    # Mengambil data dengan similarity terbesar dari index yang ada
+    closest = similarity_data.columns[index[-1:-(n+2):-1]]
+    
+    # Drop nama_author agar nama buku yang dicari tidak muncul dalam daftar rekomendasi
+    closest = closest.drop(notable_effects, errors='ignore')
+ 
+    return pd.DataFrame(closest).merge(items).head(n)
 
-    # Make X, Y columns 
-    filtered_df['X'] = tsne_features[:, 0]
-    filtered_df['Y'] = tsne_features[:, 1]
+# skincare[skincare['notable_effects'].eq('Hydrating, Moisturizing')].head(1)
 
-    target = filtered_df[filtered_df['product_name'] == product]
 
-    target_x = target['X'].values[0]
-    target_y = target['Y'].values[0]
-
-    df1 = pd.DataFrame()
-    df1['point'] = [(x, y) for x,y in zip(filtered_df['X'], filtered_df['Y'])]
-
-    filtered_df['distance'] = [cdist(np.array([[target_x,target_y]]), np.array([product]), metric='euclidean') for product in df1['point']]
-
-    # arrange by descending order
-    top_matches = filtered_df.sort_values(by=['distance'])
-
-    # Compute ingredients in common
-    target_notable_effects = target.notable_effects.values
-    c1_list = target_notable_effects[0].split(",")
-    c1_list = [x.strip(' ') for x in c1_list]
-    c1_set = set(c1_list)
-
-    top_matches['notable_effects in common'] = [c1_set.intersection( set([x.strip(' ')for x in product.split(",")]) ) for product in top_matches['notable_effects']]
-
-    # Select relevant columns
-    top_matches = top_matches[['product_name', 'price', 'description', 'notable_effects']]
-    top_matches = top_matches.reset_index(drop=True)
-    top_matches = top_matches.drop(top_matches.index[0])
-
-    st.dataframe(top_matches.head(5))
-
+# Mendapatkan rekomendasi buku yang mirip dengan buku dari author Kate White
+skincare_recommendations(product_name['notable_effects'])
