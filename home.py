@@ -14,10 +14,12 @@ import tensorflow as tf
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt 
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Import the Dataset 
 
-skincare = pd.read_csv("skincare.csv")
+skincare = pd.read_csv("skincare.csv", encoding='utf-8', index_col=None)
 
 import streamlit as st
 from sklearn.manifold import TSNE 
@@ -48,31 +50,28 @@ product
 
 product_name = filtered_df[filtered_df["product_name"] == product]
 st.dataframe(product_name)
+# Reset index
+product_name = product_name.reset_index(drop=True)
 
 ## MODELLING with Content Based Filtering
-# TF-IDF Vectorizer
-from sklearn.feature_extraction.text import TfidfVectorizer
-
 # Inisialisasi TfidfVectorizer
 tf = TfidfVectorizer()
  
 # Melakukan perhitungan idf pada data 'book_title'
-tf.fit(skincare['product_name']) 
+tf.fit(skincare['notable_effects']) 
  
 # Mapping array dari fitur index integer ke fitur nama
 tf.get_feature_names()
 
-
 # Melakukan fit lalu ditransformasikan ke bentuk matrix
-tfidf_matrix = tf.fit_transform(skincare['product_name']) 
+tfidf_matrix = tf.fit_transform(skincare['notable_effects']) 
  
 # Melihat ukuran matrix tfidf
 shape = tfidf_matrix.shape
-
+shape
 
 # Mengubah vektor tf-idf dalam bentuk matriks dengan fungsi todense()
 tfidf_matrix.todense()
-
 
 # Membuat dataframe untuk melihat tf-idf matrix
 # Kolom diisi dengan judul buku
@@ -81,42 +80,42 @@ tfidf_matrix.todense()
 pd.DataFrame(
     tfidf_matrix.todense(), 
     columns=tf.get_feature_names(),
-    index=skincare['notable_effects']
+    index=skincare.product_name
 ).sample(shape[1], axis=1).sample(10, axis=0)
 
-
 # Menghitung cosine similarity pada matrix tf-idf
-from sklearn.metrics.pairwise import cosine_similarity
 cosine_sim = cosine_similarity(tfidf_matrix) 
-cosine_sim
-
+st.write(type(cosine_sim))
 
 # Membuat dataframe dari variabel cosine_sim dengan baris dan kolom berupa author buku
-cosine_sim_df = pd.DataFrame(cosine_sim, index=skincare['notable_effects'], columns=skincare['notable_effects'])
-print('Shape:', cosine_sim_df.shape)
+cosine_sim_df = pd.DataFrame(cosine_sim, index=skincare['product_name'], columns=skincare['product_name'])
  
 # Melihat similarity matrix pada setiap author buku
 cosine_sim_df.sample(7, axis=1).sample(10, axis=0)
 
-
-def skincare_recommendations(notable_effects, similarity_data=cosine_sim_df, items=skincare[['notable_effects', 'product_name']], n=5):
+def skincare_recommendations(nama, similarity_data=cosine_sim_df, items=skincare[['product_name', 'notable_effects']], k=5):
     
     # Mengambil data dengan menggunakan argpartition untuk melakukan partisi secara tidak langsung sepanjang sumbu yang diberikan    
     # Dataframe diubah menjadi numpy
     # Range(start, stop, step)
-    index = similarity_data.loc[:,notable_effects].to_numpy().argpartition(
-        range(-1, -n, -1))
+    index = similarity_data.loc[:,nama].to_numpy().argpartition(
+        range(-1, -k, -1))
     
     # Mengambil data dengan similarity terbesar dari index yang ada
-    closest = similarity_data.columns[index[-1:-(n+2):-1]]
+    closest = similarity_data.columns[index[-1:-(k+2):-1]]
     
     # Drop nama_author agar nama buku yang dicari tidak muncul dalam daftar rekomendasi
-    closest = closest.drop(notable_effects, errors='ignore')
+    closest = closest.drop(nama, errors='ignore')
  
-    return pd.DataFrame(closest).merge(items).head(n)
+    return pd.DataFrame(closest).merge(items).head(k)
 
 # skincare[skincare['notable_effects'].eq('Hydrating, Moisturizing')].head(1)
 
 
 # Mendapatkan rekomendasi buku yang mirip dengan buku dari author Kate White
-skincare_recommendations(product_name['notable_effects'])
+
+nama_produk = str(product_name['product_name'])
+nama_produk = nama_produk.replace(" \nName: product_name, dtype: object", " ")
+nama_produk = nama_produk[2:]
+st.write(type(nama_produk))
+skincare_recommendations(nama_produk)
