@@ -118,4 +118,4 @@ nama_produk = str(product_name['product_name'])
 nama_produk = nama_produk.replace(" \nName: product_name, dtype: object", " ")
 nama_produk = nama_produk[2:]
 st.write(type(nama_produk))
-skincare_recommendations(nama_produk)
+skincare_recommendations(product_name['product_name'])
