@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import streamlit as st
+from PIL import Image
 
 # Import the Dataset 
 skincare = pd.read_csv("skincare.csv", encoding='utf-8', index_col=None)
@@ -19,6 +20,18 @@ st.sidebar.image('image2.jpg')
 
 # showing pages berdasarkan pilihan
 if sdbar == 'Home' or sdbar == '':
+
+    # menampilkan halaman utama
+    st.header("Capstone Project Team 096 - Aplikasi Rekomendasi Skincare :sparkles:")
+    
+    # header image
+    image = st.image('image.jpg')
+
+    st.markdown(
+    "Aplikasi Rekomendasi Skincare merupakan sebuah implementasi dari projek Machine Learning yang dapat merekomendasikan pemilihan skincare sesuai dengan jenis dan juga permasalahan kulit Anda."
+    + " Anda dapat memasukkan jenis kulit, keluhan, dan hal yang dibutuhkan kulit untuk mengetahui rekomendasi skincare yang Anda butuhkan "
+    )
+
     # Choose a product product type category
     # pt = product type
     category = st.selectbox(label='Pilih kategori produk kamu : ', options= skincare['tipe_produk'].unique() )
@@ -98,7 +111,7 @@ if sdbar == 'Home' or sdbar == '':
         return df
 
     # Membuat button untuk menampilkan rekomendasi
-    model_run = st.button('Find similar products!')
+    model_run = st.button('Temukan rekomendasi produk lainnya!')
     # Mendapatkan rekomendasi
     if model_run:
         st.write('Berikut rekomendasi pilihan skincare yang kamu butuhkan sesuai efek yang kamu inginkan')
