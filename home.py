@@ -1,37 +1,42 @@
-from os import write
 from numpy.core.fromnumeric import prod
 import tensorflow as tf
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import streamlit as st
-from PIL import Image
 
 # Import the Dataset 
 skincare = pd.read_csv("skincare.csv", encoding='utf-8', index_col=None)
 
 # Header
-st.set_page_config(page_title="Home - Aplikasi Rekomendasi Skincare", page_icon=":blossom:")
+st.set_page_config(page_title="Home - Aplikasi Rekomendasi Skincare", page_icon=":blossom:", layout="wide",)
 
 # menampilkan halaman utama
-st.header("Capstone Project Team 096 - Aplikasi Rekomendasi Skincare :sparkles:")
+st.title("Capstone Project Team 096 - Aplikasi Rekomendasi Skincare :sparkles:")
+
+st.write('---') 
 
 # header image
-image = st.image('image.jpg')
+image = st.image('image2.jpg')
 
-st.markdown(
-"Aplikasi Rekomendasi Skincare merupakan sebuah implementasi dari projek Machine Learning yang dapat merekomendasikan pemilihan skincare sesuai dengan jenis dan juga permasalahan kulit Anda."
-+ " Anda dapat memasukkan jenis kulit, keluhan, dan hal yang dibutuhkan kulit untuk mengetahui rekomendasi skincare yang Anda butuhkan"
-)
+st.write('---') 
+
+st.write(
+    """
+    ##### **Aplikasi rekomendasi skincare merupakan sebuah implementasi dari projek Machine Learning yang dapat merekomendasikan pemilihan skincare sesuai dengan jenis dan juga permasalahan kulit Anda. Anda dapat memasukkan jenis kulit, keluhan, dan hal yang dibutuhkan kulit untuk mengetahui rekomendasi skincare yang Anda butuhkan**
+    """)  
+st.write('---') 
+
+first,last = st.columns(2)
 
 # Choose a product product type category
 # pt = product type
-category = st.selectbox(label='Pilih kategori produk kamu : ', options= skincare['tipe_produk'].unique() )
+category = first.selectbox(label='Pilih kategori produk kamu : ', options= skincare['tipe_produk'].unique() )
 category_pt = skincare[skincare['tipe_produk'] == category]
 
 # Choose a skintype
 # st = skin type
-skin_type = st.selectbox(label='Pilih tipe kulit kamu : ', options= ['Combination', 'Dry', 'Normal', 'Oily', 'Sensitive'] )
+skin_type = last.selectbox(label='Pilih tipe kulit kamu : ', options= ['Combination', 'Dry', 'Normal', 'Oily', 'Sensitive'] )
 category_st_pt = category_pt[category_pt[skin_type] == 1]
 
 # pilih keluhan
@@ -49,7 +54,7 @@ category_ne_st_pt = category_st_pt[category_st_pt["notable_effects"].isin(select
 # produk2 yang sudah di filter dan ada di var filtered_df kemudian kita saring dan ambil yang unik2 saja berdasarkan product_name dan di masukkan ke var opsi_pn
 opsi_pn = category_ne_st_pt['product_name'].unique().tolist()
 # buat sebuah selectbox yang berisi pilihan produk yg sudah di filter di atas
-product = st.selectbox(label='Select the product', options = sorted(opsi_pn))
+product = st.selectbox(label='Produk yang cocok sesuai kondisi kulit kamu', options = sorted(opsi_pn))
 # variabel product di atas akan menampung sebuah produk yang akan memunculkan rekomendasi produk lain
 
 ## MODELLING with Content Based Filtering
@@ -90,7 +95,7 @@ cosine_sim_df = pd.DataFrame(cosine_sim, index=skincare['product_name'], columns
 cosine_sim_df.sample(7, axis=1).sample(10, axis=0)
 
 # Membuat fungsi untuk mendapatkan rekomendasi
-def skincare_recommendations(nama_produk, similarity_data=cosine_sim_df, items=skincare[['product_name', 'picture_src','price', 'description', 'notable_effects']], k=5):
+def skincare_recommendations(nama_produk, similarity_data=cosine_sim_df, items=skincare[['product_name', 'produk-href','price', 'description']], k=5):
     
     # Mengambil data dengan menggunakan argpartition untuk melakukan partisi secara tidak langsung sepanjang sumbu yang diberikan    
     # Dataframe diubah menjadi numpy
@@ -109,5 +114,6 @@ def skincare_recommendations(nama_produk, similarity_data=cosine_sim_df, items=s
 model_run = st.button('Temukan rekomendasi produk lainnya!')
 # Mendapatkan rekomendasi
 if model_run:
-    st.write('Berikut rekomendasi pilihan skincare yang kamu butuhkan sesuai efek yang kamu inginkan')
+    st.write('Berikut rekomendasi produk serupa lainnya sesuai yang kamu inginkan')
     st.write(skincare_recommendations(product))
+    st.balloons()
