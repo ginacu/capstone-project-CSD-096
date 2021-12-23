@@ -40,7 +40,7 @@ skin_type = last.selectbox(label='Pilih tipe kulit kamu : ', options= ['Combinat
 category_st_pt = category_pt[category_pt[skin_type] == 1]
 
 # pilih keluhan
-prob = st.multiselect(label='Masukan permasalahan kulit kamu : ', options= ['Jerawat', 'Pori-pori besar', 'Flek hitam', 'Kerutan', 'Komedo', 'Warna kulit tidak merata', 'Milia'] )
+prob = st.multiselect(label='Masukan permasalahan kulit kamu : ', options= ['Kulit kusam', 'Jerawat', 'Bekas jerawat','Pori-pori besar', 'Flek hitam', 'Garis halus dan kerutan', 'Komedo', 'Warna kulit tidak merata', 'Milia'] )
 
 # Choose notable_effects
 # dari produk yg sudah di filter berdasarkan product type dan skin type(category_st_pt), kita akan ambil nilai yang unik di kolom notable_effects
